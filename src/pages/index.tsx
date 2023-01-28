@@ -1,6 +1,13 @@
+import URLComponent from '@/componentscomponents/url-componentcomponents'
+import { Inter } from '@next/font/google'
+
 import Head from 'next/head'
 
-export default function Home() {
+const inter = Inter({ subsets: ['latin'] })
+
+// TODO: Call GitHub Api to get the branches.
+
+export default function Index() {
 	return (
 		<>
 			<Head>
@@ -10,6 +17,7 @@ export default function Home() {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			{/* TODO: Components should live here. */}
+			<URLComponent />
 		</>
 	)
 }
