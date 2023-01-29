@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { TextField, Button, Typography, Box } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { styled, useTheme } from '@mui/material/styles';
+import { getBranches, getStars } from '../services/github-api';
 
 // TODO: From github api check if the account is valid.
 // TODO: Add logic for submit and Loading state
@@ -20,23 +21,25 @@ export default function URLComponent() {
 	const [error, setError] = useState<string>('')
 	const [url, setUrl] = useState<string>('')
 
-	const handleClick = () => {
+	const handleClick = async () => {
 		// Toggle palette mode
 		// theme.palette.mode = 'light'
-		console.log('Button clicked');
-		console.log(theme.palette.mode);
-		router.push('/sandpack');
+		// console.log(theme.palette.mode);
+		// router.push('/sandpack');
+		// Check if Owner and Repo are valid and then redirect to sandpack
+
+		const owner = url.split('/')[3];
+		const repo = url.split('/')[4];
+		const branchesData = await getBranches(owner, repo);
+		const starsData = await getStars(owner, repo);
+
+		// console.log(branchesData);
+		console.log(starsData);
 	}
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		// Check if url ends with .git if not show error
-		// If url is valid then call github api to get the branches
+		// Check if the url is valid
 		const url = event.target.value;
-		if (!url.endsWith('.git')) {
-			setError('Oops! Something went wrong. Try again.');
-		}
-		setUrl(event.target.value);
-		console.log(event.target.value);
 	}
 
 	return (
