@@ -1,4 +1,4 @@
-//createTheme is a function that returns a theme object
+import '../styles/globals.css'
 import { CssBaseline } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Inter } from '@next/font/google';
@@ -42,6 +42,7 @@ const ligthTheme = createTheme({
 	palette: {
 		mode: 'light',
 		primary: {
+			main: '#EEEEEE',
 			100: '#F2F2F2',
 			200: '#B0B0B0',
 			300: '#383838',
@@ -57,12 +58,12 @@ const ligthTheme = createTheme({
 });
 
 
-
+// TODO: Redevelop theme object
 const darkTheme = createTheme({
 	palette: {
 		mode: 'dark',
 		primary: {
-			light: '#F2F2F2',
+			main: '#222222',
 			100: '#151515',
 			200: '#515151',
 			300: '#D1D1D1',
@@ -83,6 +84,6 @@ export default function KanbanBranchesPOC({ Component, pageProps }: AppProps) {
 		<ThemeProvider theme={darkTheme}>
 			<CssBaseline />
 			<Component {...pageProps} />
-		</ThemeProvider>
+		</ThemeProvider >
 	)
 }
