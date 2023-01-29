@@ -1,45 +1,52 @@
 import Image from 'next/image'
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-import { TextField, Button, Typography, Box } from '@mui/material';
 import Grid from '@mui/material/Grid';
+import { useRouter } from 'next/router';
+import { useContext, useEffect, useState } from 'react';
+import { TextField, Button, Typography, Box } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import { getBranches, getStars } from '../services/github-api';
+import { GithubDataContext } from '../context/github-context';
+
 
 // TODO: From github api check if the account is valid.
 // TODO: Add logic for submit and Loading state
 // TODO: Logic for url parsing should live here.
 // TODO: Develop a loading state for the button.
+// TODO: Add URL validation logic.
 
 /**
  * S stands for Styled Component
  */
 
 export default function URLComponent() {
-	const router = useRouter()
+	const router = useRouter();
 	const theme = useTheme();
-	const [error, setError] = useState<string>('')
-	const [url, setUrl] = useState<string>('')
+	const [url, setUrl] = useState<string>('');
+	const { branches, stars, setBranches, setStars } = useContext(GithubDataContext);
+
+	useEffect(() => {
+		// if (branches.length > 0 && stars) {
+		// 	router.push('/sandpack');
+		// }
+		console.log(branches);
+		console.log(stars);
+	}, [branches, stars]);
 
 	const handleClick = async () => {
-		// Toggle palette mode
-		// theme.palette.mode = 'light'
-		// console.log(theme.palette.mode);
-		// router.push('/sandpack');
-		// Check if Owner and Repo are valid and then redirect to sandpack
-
-		const owner = url.split('/')[3];
-		const repo = url.split('/')[4];
-		const branchesData = await getBranches(owner, repo);
-		const starsData = await getStars(owner, repo);
-
-		// console.log(branchesData);
-		console.log(starsData);
+		if (!url) return;
+		else {
+			const owner = url.split('/')[3];
+			const repo = url.split('/')[4];
+			const branchesData = await getBranches(owner, repo);
+			const starsData = await getStars(owner, repo);
+			setBranches(branchesData.data);
+			setStars(starsData);
+		}
 	}
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		// Check if the url is valid
 		const url = event.target.value;
+		setUrl(url);
 	}
 
 	return (
