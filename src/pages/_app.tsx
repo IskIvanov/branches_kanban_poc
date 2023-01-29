@@ -1,10 +1,12 @@
-import '../styles/globals.css'
 import { CssBaseline } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import '../styles/global.css'
 import { Inter } from '@next/font/google';
 
 import type { AppProps } from 'next/app';
+import { GithubDataProvider } from '@/componentscontext/github-contextcomponents';
 
+//TODO: Fix TailwindCSS import. 
 // light theme colors is a theme colors: #F2F2F2 , #B0B0B0, #222222, #151515, #E75B4F
 // dark theme colors is a theme colors: #151515, #515151, #D1D1D1,#EEEEEE, #FFFFFF, #D62617
 
@@ -82,8 +84,10 @@ const darkTheme = createTheme({
 export default function KanbanBranchesPOC({ Component, pageProps }: AppProps) {
 	return (
 		<ThemeProvider theme={darkTheme}>
-			<CssBaseline />
-			<Component {...pageProps} />
+			<GithubDataProvider>
+				<CssBaseline />
+				<Component {...pageProps} />
+			</GithubDataProvider>
 		</ThemeProvider >
 	)
 }
