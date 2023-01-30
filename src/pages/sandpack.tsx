@@ -1,8 +1,9 @@
 import Image from 'next/image';
-import { useContext, useEffect, useState } from "react";
+import Stack from '@mui/material/Stack';
+import { useContext, useState } from "react";
 import { GithubDataContext } from '../context/github-context';
 import { styled } from '@mui/material/styles';
-import { Paper, Grid, Box, Button } from '@mui/material';
+import { Paper, Grid, Box } from '@mui/material';
 import SandpackHeader from '../components/sandpack-hreader';
 
 type BranchCategory = {
@@ -52,42 +53,44 @@ export default function SandpackPage() {
 				<SandpackHeader />
 
 				{/* In Progress */}
-				<Grid item >
-					<p>In Progress ({localBranches[0].branches.length})</p>
-					{localBranches[0].branches.map((branch: any, i: number) => (
-						<Box key={i} sx={{ position: 'relative' }}>
-							<SItem key={i} elevation={0}>{branch.name}</SItem>
-							<SRightIcon src='/images/move-right.svg' alt="Right arrow" width={18} height={18} onClick={() => handleMove(branch.name, "In Progress", "Review")} />
-						</Box>
-					))}
-				</Grid>
+				<Stack direction='row' justifyContent="space-between" spacing={2} width={'90%'} >
+					<div>
+						<p>In Progress ({localBranches[0].branches.length})</p>
+						{localBranches[0].branches.map((branch: any, i: number) => (
+							<Box key={i} sx={{ position: 'relative' }}>
+								<SItem key={i} elevation={0}>{branch.name}</SItem>
+								<SRightIcon src='/images/move-right.svg' alt="Right arrow" width={18} height={18} onClick={() => handleMove(branch.name, "In Progress", "Review")} />
+							</Box>
+						))}
+					</div>
 
-				{/* Review */}
-				<Grid item>
-					<p>Review ({localBranches[1].branches.length})</p>
-					{localBranches[1].branches.map((branch: any, i: number) => (
-						// <Box key={i} sx={{
-						// 	// position: 'relative'
-						// }}>
-						<SBox key={i}>
-							<SItem elevation={0}>{branch}</SItem>
-							<SLeftIcon src='/images/move-left.svg' alt="Left arrow" width={18} height={18} onClick={() => handleMove(branch.name, "Review", "In Progress")} />
-							<SRightIcon src='/images/move-right.svg' alt="Right arrow" width={18} height={18} onClick={() => handleMove(branch.name, "Review", "In Progress")} />
-						</SBox>
-						// </Box>
-					))}
-				</Grid>
+					{/* Review */}
+					<div>
+						<p>Review ({localBranches[1].branches.length})</p>
+						{localBranches[1].branches.map((branch: any, i: number) => (
+							// <Box key={i} sx={{
+							// 	// position: 'relative'
+							// }}>
+							<SBox key={i}>
+								<SItem elevation={0}>{branch}</SItem>
+								<SLeftIcon src='/images/move-left.svg' alt="Left arrow" width={18} height={18} onClick={() => handleMove(branch.name, "Review", "In Progress")} />
+								<SRightIcon src='/images/move-right.svg' alt="Right arrow" width={18} height={18} onClick={() => handleMove(branch.name, "Review", "In Progress")} />
+							</SBox>
+							// </Box>
+						))}
+					</div>
 
-				{/* Ready to merge */}
-				<Grid item>
-					<p>Ready to merge ({localBranches[2].branches.length})</p>
-					{localBranches[2].branches.map((branch: any, i: number) => (
-						<>
-							<SItem key={i} elevation={0}>{branch.name}</SItem>
-							{/* <button onClick={() => handleMove(branch.name, "Ready to merge", "In Progress")}>Move</button> */}
-						</>
-					))}
-				</Grid>
+					{/* Ready to merge */}
+					<div>
+						<p>Ready to merge ({localBranches[2].branches.length})</p>
+						{localBranches[2].branches.map((branch: any, i: number) => (
+							<>
+								<SItem key={i} elevation={0}>{branch.name}</SItem>
+								{/* <button onClick={() => handleMove(branch.name, "Ready to merge", "In Progress")}>Move</button> */}
+							</>
+						))}
+					</div>
+				</Stack>
 			</Grid>
 		</Box >
 	)
