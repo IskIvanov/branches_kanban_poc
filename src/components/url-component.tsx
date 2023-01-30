@@ -25,9 +25,9 @@ export default function URLComponent() {
 	const { branches, stars, setBranches, setStars } = useContext(GithubDataContext);
 
 	useEffect(() => {
-		// if (branches.length > 0 && stars) {
-		// 	router.push('/sandpack');
-		// }
+		if (branches.length > 0 && stars) {
+			router.push('/sandpack');
+		}
 		console.log(branches);
 		console.log(stars);
 	}, [branches, stars]);

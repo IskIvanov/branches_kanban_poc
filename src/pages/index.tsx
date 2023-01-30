@@ -1,4 +1,4 @@
-import URLComponent from '@/componentscomponents/url-componentcomponents'
+import URLComponent from '../components/url-component';
 import { Inter } from '@next/font/google'
 import Head from 'next/head'
 

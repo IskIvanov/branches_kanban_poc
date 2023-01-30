@@ -1,8 +1,8 @@
+import '../styles/global.css';
 import { CssBaseline } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import '../styles/global.css';
 import type { AppProps } from 'next/app';
-import { GithubDataProvider } from '@/componentscontext/github-contextcomponents';
+import { GithubDataProvider } from '../context/github-context';
 
 //TODO: Fix TailwindCSS import. 
 // light theme colors is a theme colors: #F2F2F2 , #B0B0B0, #222222, #151515, #E75B4F
@@ -56,7 +56,7 @@ const ligthTheme = createTheme({
 });
 
 
-// TODO: Redevelop theme object
+// TODO: Fix Palette colors !
 const darkTheme = createTheme({
 	palette: {
 		mode: 'dark',
@@ -71,7 +71,6 @@ const darkTheme = createTheme({
 		}
 	},
 	typography: {
-
 		...typography
 	}
 });
