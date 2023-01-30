@@ -1,14 +1,13 @@
 import Image from 'next/image'
 import Grid from '@mui/material/Grid';
 import { useRouter } from 'next/router';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { TextField, Button, Typography, Box } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import { getBranches, getStars } from '../services/github-api';
 import { GithubDataContext } from '../context/github-context';
 
 
-// TODO: From github api check if the account is valid.
 // TODO: Add logic for submit and Loading state
 // TODO: Logic for url parsing should live here.
 // TODO: Develop a loading state for the button.
@@ -22,25 +21,29 @@ export default function URLComponent() {
 	const router = useRouter();
 	const theme = useTheme();
 	const [url, setUrl] = useState<string>('');
+	const [loading, setLoading] = useState<boolean>(false);
+	const [error, setError] = useState<boolean>(false);
 	const { branches, stars, setBranches, setStars } = useContext(GithubDataContext);
 
-	useEffect(() => {
-		if (branches.length > 0 && stars) {
-			router.push('/sandpack');
-		}
-		console.log(branches);
-		console.log(stars);
-	}, [branches, stars]);
-
+	// Add a callback to handleClick to set loading state to true.
 	const handleClick = async () => {
 		if (!url) return;
 		else {
+			setLoading(true);
+			setError(false);
 			const owner = url.split('/')[3];
 			const repo = url.split('/')[4];
 			const branchesData = await getBranches(owner, repo);
 			const starsData = await getStars(owner, repo);
-			setBranches(branchesData.data);
-			setStars(starsData);
+			// TODO: Add logic for loading button here.
+			await setBranches(branchesData.data);
+			await setStars(starsData);
+			setLoading(false);
+			if (branches.length > 0 && stars) {
+				router.push('/sandpack');
+			} else {
+				setError(true);
+			}
 		}
 	}
 
@@ -60,9 +63,10 @@ export default function URLComponent() {
 				</Grid>
 				<Grid item xs={10} >
 					<TextField id="standard-basic" variant="standard" onChange={handleChange} fullWidth />
+					<Typography variant="body2" color="error">{error ? 'Ops! Something went wrong. Try again.' : ''}</Typography>
 				</Grid>
 				<Grid item xs={2}>
-					<SButton variant="contained" onClick={handleClick}>Submit</SButton>
+					<SButton variant="contained" onClick={handleClick}>{loading ? 'Loading...' : 'Submit'}</SButton>
 				</Grid>
 			</Grid>
 		</SContainer>
