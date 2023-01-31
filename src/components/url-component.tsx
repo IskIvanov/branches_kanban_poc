@@ -35,15 +35,16 @@ export default function URLComponent() {
 			const repo = url.split('/')[4];
 			const branchesData = await getBranches(owner, repo);
 			const starsData = await getStars(owner, repo);
-			// TODO: Add logic for loading button here.
-			await setBranches(branchesData.data);
-			await setStars(starsData);
-			setLoading(false);
+			if (branchesData && starsData) {
+				await setBranches(branchesData.data);
+				await setStars(starsData);
+			}
 			if (branchesData && starsData) {
 				router.push('/sandpack');
 			} else {
 				setError(true);
 			}
+			setLoading(false);
 		}
 	}
 
@@ -63,7 +64,7 @@ export default function URLComponent() {
 				</Grid>
 				<Grid item xs={10} >
 					<TextField id="standard-basic" variant="standard" onChange={handleChange} fullWidth />
-					<Typography variant="body2" color="error">{error ? 'Ops! Something went wrong. Try again.' : ''}</Typography>
+					<Typography variant="body2" sx={{ paddingTop: '1rem' }} color="error">{error ? 'Ops! Something went wrong. Try again.' : ''}</Typography>
 				</Grid>
 				<Grid item xs={2}>
 					<SButton variant="contained" onClick={handleClick}>{loading ? 'Loading...' : 'Submit'}</SButton>
