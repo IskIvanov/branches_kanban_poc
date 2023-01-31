@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Grid from '@mui/material/Grid';
 import { useRouter } from 'next/router';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { TextField, Button, Typography, Box } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import { getBranches, getStars } from '../services/github-api';
@@ -23,9 +23,9 @@ export default function URLComponent() {
 	const [url, setUrl] = useState<string>('');
 	const [loading, setLoading] = useState<boolean>(false);
 	const [error, setError] = useState<boolean>(false);
-	const { branches, stars, setBranches, setStars } = useContext(GithubDataContext);
+	const { setBranches, setStars } = useContext(GithubDataContext);
 
-	// Add a callback to handleClick to set loading state to true.
+	// Add a callback to handleClick the set loading state to true.
 	const handleClick = async () => {
 		if (!url) return;
 		else {
@@ -39,7 +39,7 @@ export default function URLComponent() {
 			await setBranches(branchesData.data);
 			await setStars(starsData);
 			setLoading(false);
-			if (branches.length > 0 && stars) {
+			if (branchesData && starsData) {
 				router.push('/sandpack');
 			} else {
 				setError(true);
