@@ -6,11 +6,6 @@ import { styled } from '@mui/material/styles';
 import { Paper, Grid, Box } from '@mui/material';
 import SandpackHeader from '../components/sandpack-hreader';
 
-type BranchCategory = {
-	name: string;
-	branches: string[];
-}
-
 export default function SandpackPage() {
 	const { branches } = useContext(GithubDataContext);
 
@@ -23,32 +18,34 @@ export default function SandpackPage() {
 	const handleMove = (branch: any, from: string, to: string) => {
 		const fromCategory = localBranches.find((category) => category.name === from);
 		const toCategory = localBranches.find((category) => category.name === to);
-		const fromIndex = localBranches.indexOf(fromCategory);
-		const toIndex = localBranches.indexOf(toCategory);
-
-		fromCategory.branches.splice(fromCategory.branches.indexOf(branch), 1);
-		toCategory.branches.push(branch);
-
-		setLocalBranches((oldLocalBranches) => {
-			const updatedLocalBranches = [...oldLocalBranches];
-			updatedLocalBranches[fromIndex] = fromCategory;
-			updatedLocalBranches[toIndex] = toCategory;
-			return updatedLocalBranches;
+		const newFromCategory = {
+			...fromCategory,
+			branches: fromCategory.branches.filter((b: any) => b.name !== branch.name),
+		};
+		const newToCategory = {
+			...toCategory,
+			branches: [...toCategory.branches, branch],
+		};
+		const newLocalBranches = localBranches.map((category) => {
+			if (category.name === from) return newFromCategory;
+			if (category.name === to) return newToCategory;
+			return category;
 		});
+		setLocalBranches(newLocalBranches);
 	};
 
 
 	const moveForward = (branch: any) => {
 		const from = localBranches.find((category) => category.branches.includes(branch));
-		const to = localBranches[localBranches.indexOf(from) - 1];
-		console.log(from, to);
+		const to = localBranches[localBranches.indexOf(from) + 1];
+		if (from.name === 'Ready to Merge') return;
 		handleMove(branch, from.name, to.name);
 	};
 
 	const moveBack = (branch: any) => {
 		const from = localBranches.find((category) => category.branches.includes(branch));
-		const to = localBranches[localBranches.indexOf(from) + 1];
-		console.log(from, to);
+		const to = localBranches[localBranches.indexOf(from) - 1];
+		if (from.name === 'In progress') return;
 		handleMove(branch, from.name, to.name);
 	};
 
@@ -64,8 +61,8 @@ export default function SandpackPage() {
 							{category.branches.map((branch: any, i: number) => (
 								<Box key={i} sx={{ position: 'relative' }}>
 									<SItem key={i} elevation={0}>{branch.name}</SItem>
-									<button onClick={() => moveForward(branch)}>left</button>
-									<button onClick={() => moveBack(branch)}>right</button>
+									<SLeftIcon src='/images/move-left.svg' alt="Left arrow" width={18} height={18} onClick={() => moveBack(branch)} />
+									<SRightIcon src='/images/move-right.svg' alt="Right arrow" width={18} height={18} onClick={() => moveForward(branch)} />
 								</Box>
 							))}
 						</div>
@@ -75,11 +72,6 @@ export default function SandpackPage() {
 		</Box >
 	)
 }
-
-
-const SBox = styled(Box)(({ }) => ({
-	position: 'relative',
-}));
 
 const SLeftIcon = styled(Image)(({ }) => ({
 	position: 'absolute',
