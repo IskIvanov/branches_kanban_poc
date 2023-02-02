@@ -14,37 +14,42 @@ type BranchCategory = {
 export default function SandpackPage() {
 	const { branches } = useContext(GithubDataContext);
 
-	// TODO: Abstract this into GithubDataContext.
-
-	const [localBranches, setLocalBranches] = useState<BranchCategory[]>([
+	const [localBranches, setLocalBranches] = useState<any[]>([
 		{ name: "In progress", branches: [...branches] },
 		{ name: "Review", branches: [] },
 		{ name: "Ready to Merge", branches: [] },
 	]);
 
-	const handleMove = (branch: string, from: string, to: string) => {
-		// Map over the existing branches to create a new array with updated values
-		const updatedBranches = localBranches.map((category) => {
+	const handleMove = (branch: any, from: string, to: string) => {
+		const fromCategory = localBranches.find((category) => category.name === from);
+		const toCategory = localBranches.find((category) => category.name === to);
+		const fromIndex = localBranches.indexOf(fromCategory);
+		const toIndex = localBranches.indexOf(toCategory);
 
-			// If the current category is the "from" category, remove the branch from the branches array
-			if (category.name === from) {
-				return {
-					...category,
-					branches: category.branches.filter((branchName: any) => branchName.name !== branch), //TODO: Type Data
-				};
-			}
-			// If the current category is the "to" category, add the branch to the branches array
-			if (category.name === to) {
-				return {
-					...category,
-					branches: [...category.branches, branch],
-				};
-			}
-			return category;
+		fromCategory.branches.splice(fromCategory.branches.indexOf(branch), 1);
+		toCategory.branches.push(branch);
+
+		setLocalBranches((oldLocalBranches) => {
+			const updatedLocalBranches = [...oldLocalBranches];
+			updatedLocalBranches[fromIndex] = fromCategory;
+			updatedLocalBranches[toIndex] = toCategory;
+			return updatedLocalBranches;
 		});
+	};
 
 
-		setLocalBranches(updatedBranches);
+	const moveForward = (branch: any) => {
+		const from = localBranches.find((category) => category.branches.includes(branch));
+		const to = localBranches[localBranches.indexOf(from) - 1];
+		console.log(from, to);
+		handleMove(branch, from.name, to.name);
+	};
+
+	const moveBack = (branch: any) => {
+		const from = localBranches.find((category) => category.branches.includes(branch));
+		const to = localBranches[localBranches.indexOf(from) + 1];
+		console.log(from, to);
+		handleMove(branch, from.name, to.name);
 	};
 
 	return (
@@ -52,44 +57,19 @@ export default function SandpackPage() {
 			<Grid container spacing={4} direction="row" justifyContent="center">
 				<SandpackHeader />
 
-				{/* In Progress */}
-				<Stack direction='row' justifyContent="space-between" spacing={2} width={'90%'} >
-					<div>
-						<p>In Progress ({localBranches[0].branches.length})</p>
-						{localBranches[0].branches.map((branch: any, i: number) => (
-							<Box key={i} sx={{ position: 'relative' }}>
-								<SItem key={i} elevation={0}>{branch.name}</SItem>
-								<SRightIcon src='/images/move-right.svg' alt="Right arrow" width={18} height={18} onClick={() => handleMove(branch.name, "In Progress", "Review")} />
-							</Box>
-						))}
-					</div>
-
-					{/* Review */}
-					<div>
-						<p>Review ({localBranches[1].branches.length})</p>
-						{localBranches[1].branches.map((branch: any, i: number) => (
-							// <Box key={i} sx={{
-							// 	// position: 'relative'
-							// }}>
-							<SBox key={i}>
-								<SItem elevation={0}>{branch}</SItem>
-								<SLeftIcon src='/images/move-left.svg' alt="Left arrow" width={18} height={18} onClick={() => handleMove(branch.name, "Review", "In Progress")} />
-								<SRightIcon src='/images/move-right.svg' alt="Right arrow" width={18} height={18} onClick={() => handleMove(branch.name, "Review", "In Progress")} />
-							</SBox>
-							// </Box>
-						))}
-					</div>
-
-					{/* Ready to merge */}
-					<div>
-						<p>Ready to merge ({localBranches[2].branches.length})</p>
-						{localBranches[2].branches.map((branch: any, i: number) => (
-							<>
-								<SItem key={i} elevation={0}>{branch.name}</SItem>
-								{/* <button onClick={() => handleMove(branch.name, "Ready to merge", "In Progress")}>Move</button> */}
-							</>
-						))}
-					</div>
+				<Stack direction="row" width={'90%'} justifyContent="space-evenly">
+					{localBranches.map((category, index) => (
+						<div key={index}>
+							<p>{category.name} {category.branches.length}</p>
+							{category.branches.map((branch: any, i: number) => (
+								<Box key={i} sx={{ position: 'relative' }}>
+									<SItem key={i} elevation={0}>{branch.name}</SItem>
+									<button onClick={() => moveForward(branch)}>left</button>
+									<button onClick={() => moveBack(branch)}>right</button>
+								</Box>
+							))}
+						</div>
+					))}
 				</Stack>
 			</Grid>
 		</Box >
