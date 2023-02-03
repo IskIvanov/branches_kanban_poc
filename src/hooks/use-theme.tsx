@@ -4,7 +4,7 @@ import { lightPallety, darkPalette, typography } from '../types/constants';
 
 // The useTheme hook is used to create a theme and toggle between light and dark mode
 export default function useTheme() {
-	const [mode, setMode] = useState<PaletteMode>('dark');
+	const [mode, setMode] = useState<PaletteMode>('light');
 	// use memo is used to prevent the toggleColorMode function from being recreated on every render
 	const colorMode = useMemo(
 		() => ({
