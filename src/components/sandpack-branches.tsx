@@ -10,7 +10,7 @@ export default function SandpackKanbanBranches() {
 	const { updatedBranches, moveForward, moveBack } = useMoveBranchesLogic();
 
 	return (
-		<Stack direction="row" width={'90%'} alignContent={'center'} justifyContent={'center'} >
+		<Stack direction="row" width={'100%'} alignContent={'center'} justifyContent={'center'} >
 			{updatedBranches.map((category, index) => (
 				<SColumn key={index}>
 					<p>{category.name} {category.branches.length}</p>
@@ -27,13 +27,13 @@ export default function SandpackKanbanBranches() {
 	)
 }
 
-const SLeftIcon = styled(Image)(({ }) => ({
+const SLeftIcon = styled(Image)(() => ({
 	position: 'absolute',
 	top: 22,
 	left: 25,
 }));
 
-const SRightIcon = styled(Image)(({ }) => ({
+const SRightIcon = styled(Image)(() => ({
 	position: 'absolute',
 	top: 22,
 	right: 30,
@@ -53,7 +53,7 @@ const SItem = styled(Paper)(({ theme }) => ({
 	}
 }));
 
-const SColumn = styled('div')(({ theme }) => ({
+const SColumn = styled('div')(() => ({
 	width: 500,
 	height: 'fit-content',
 }));

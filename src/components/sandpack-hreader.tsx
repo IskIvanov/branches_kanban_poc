@@ -26,13 +26,13 @@ export default function SandpackHeader() {
 	);
 }
 
-const SSandpack = styled(Grid)(({ }) => ({
+const SSandpack = styled(Grid)(() => ({
 	display: 'flex',
 	flexDirection: 'column',
 	alignItems: 'center',
 	marginBottom: '100px',
 }));
-const SSandpackHeader = styled(Grid)(({ }) => ({
+const SSandpackHeader = styled(Grid)(() => ({
 	display: 'flex',
 	flexDirection: 'row',
 	alignItems: 'center',
@@ -45,7 +45,7 @@ const SText = styled(Typography)(({ theme }) => ({
 	marginLeft: theme.spacing(24),
 }));
 
-const SStar = styled(Box)(({ theme }) => ({
+const SStar = styled(Box)(() => ({
 	width: '2.5rem',
 	display: 'flex',
 	alignItems: 'center',

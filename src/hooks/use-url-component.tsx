@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { GithubDataContext } from '../context/github-context';
 import { getBranches, getStars } from '../services/github-api';
 
+// Custom hook to handle the logic for the url component 
 export default function useUrlComponentLogic() {
 	const router = useRouter();
 
@@ -12,7 +13,7 @@ export default function useUrlComponentLogic() {
 
 	const { setBranches, setStars } = useContext(GithubDataContext);
 
-	// Add a callback to handleClick the set loading state to true.
+	// Function to handle the click event on the button
 	const handleClick = async () => {
 		if (!url) return;
 		else {
@@ -34,7 +35,7 @@ export default function useUrlComponentLogic() {
 			setLoading(false);
 		}
 	}
-
+	// Function to handle the change event on the input, set the url state with the value of the input
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const url = event.target.value;
 		setUrl(url);

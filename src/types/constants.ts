@@ -75,7 +75,7 @@ export const typography: Typography = {
 }
 
 export const darkPalette: ThemeColors = {
-	type: "dark",
+	type: "light",
 	background: {
 		default: "#151515",
 	},

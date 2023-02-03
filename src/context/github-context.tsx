@@ -1,10 +1,9 @@
 import { createContext, useState } from 'react';
 import { ReactNode } from 'react';
-import { Branch } from '../types/constants';
 
 export const GithubDataContext = createContext({
 	branches: [],
-	setBranches: (branches: any) => { },
+	setBranches: (branches: []) => { },
 	stars: 0,
 	setStars: (stars: number) => { }
 });

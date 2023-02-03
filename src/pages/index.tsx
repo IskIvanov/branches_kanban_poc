@@ -7,7 +7,6 @@ import { ColorModeContext } from '../pages/_app';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 
-// TODO: Call GitHub Api to get the branches.
 
 export default function Index() {
 	const theme = useTheme();
@@ -20,7 +19,6 @@ export default function Index() {
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
-			{/* TODO: Components should live here. */}
 			<Box sx={{ margin: '4%' }}>
 				<IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
 					{theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}

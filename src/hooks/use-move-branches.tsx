@@ -5,13 +5,14 @@ import { GithubDataContext } from '../context/github-context';
 export const useMoveBranchesLogic = () => {
 	const { branches } = useContext(GithubDataContext);
 
-	// Mock data for all updated branches
+	// Set initial state with branches data from context
 	const [updatedBranches, setUpdatedBranches] = useState<Category[]>([
 		{ name: 'In progress', branches: [...branches] },
 		{ name: 'Review', branches: [] },
 		{ name: 'Ready to Merge', branches: [] },
 	]);
 
+	// Handle move branch logic and update state with new branches data
 	const handleMoveBranch = (branch: any, from: string, to: string) => {
 		if (updatedBranches) {
 			const fromCategory = updatedBranches.find((category) => category.name === from);
@@ -25,8 +26,8 @@ export const useMoveBranchesLogic = () => {
 					...toCategory,
 					branches: [...toCategory.branches, branch],
 				};
+				// Update the state with the new categories
 				const newUpdatedBranches = updatedBranches.map((category) => {
-					console.log(category);
 					if (category.name === from) return newFromCategory;
 					if (category.name === to) return newToCategory;
 					return category;
@@ -41,7 +42,7 @@ export const useMoveBranchesLogic = () => {
 
 	};
 
-
+	// Move branch forward to the next category
 	const moveForward = (branch: Branch) => {
 		if (updatedBranches) {
 			const fromCategory = updatedBranches.find((category: Category) => category.branches.includes(branch));
@@ -54,6 +55,7 @@ export const useMoveBranchesLogic = () => {
 		}
 	};
 
+	// Move branch back to the previous category
 	const moveBack = (branch: Branch) => {
 		if (updatedBranches) {
 			const fromCategory = updatedBranches.find((category: Category) => category.branches.includes(branch));
