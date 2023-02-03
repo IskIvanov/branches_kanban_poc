@@ -1,13 +1,19 @@
 import Image from 'next/image';
 import Stack from '@mui/material/Stack';
 import { useContext, useState } from "react";
+import { useTheme } from '@mui/material/styles';
 import { GithubDataContext } from '../context/github-context';
 import { styled } from '@mui/material/styles';
-import { Paper, Grid, Box } from '@mui/material';
+import { Paper, Grid, Box, IconButton } from '@mui/material';
 import SandpackHeader from '../components/sandpack-hreader';
+import { ColorModeContext } from './_app';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 export default function SandpackPage() {
 	const { branches } = useContext(GithubDataContext);
+	const colorMode = useContext(ColorModeContext);
+	const theme = useTheme();
 
 	const [localBranches, setLocalBranches] = useState<any[]>([
 		{ name: "In progress", branches: [...branches] },
@@ -51,6 +57,9 @@ export default function SandpackPage() {
 
 	return (
 		<Box sx={{ margin: '4%' }}>
+			<IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
+				{theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+			</IconButton>
 			<Grid container spacing={4} direction="row" justifyContent="center">
 				<SandpackHeader />
 
@@ -61,8 +70,8 @@ export default function SandpackPage() {
 							{category.branches.map((branch: any, i: number) => (
 								<Box key={i} sx={{ position: 'relative' }}>
 									<SItem key={i} elevation={0}>{branch.name}</SItem>
-									<SLeftIcon src='/images/move-left.svg' alt="Left arrow" width={18} height={18} onClick={() => moveBack(branch)} />
-									<SRightIcon src='/images/move-right.svg' alt="Right arrow" width={18} height={18} onClick={() => moveForward(branch)} />
+									<SLeftIcon src={`/images/move-left${theme.palette.mode === 'light' ? `-lg` : ''}.svg`} alt="Left arrow" width={18} height={18} onClick={() => moveBack(branch)} />
+									<SRightIcon src={`/images/move-right${theme.palette.mode === 'light' ? `-lg` : ''}.svg`} alt="Right arrow" width={18} height={18} onClick={() => moveForward(branch)} />
 								</Box>
 							))}
 						</div>
@@ -95,6 +104,6 @@ const SItem = styled(Paper)(({ theme }) => ({
 	lineHeight: '60px',
 	'&:hover': {
 		cursor: 'pointer',
-		backgroundColor: '#383838',
+		backgroundColor: theme.palette.secondary.main,
 	}
 }));

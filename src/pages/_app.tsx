@@ -1,5 +1,8 @@
+import 'typeface-inter';
 import '../styles/global.css';
-import { CssBaseline } from '@mui/material';
+import { useMemo, useState } from 'react';
+import { createContext } from 'react';
+import { CssBaseline, PaletteMode } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import type { AppProps } from 'next/app';
 import { GithubDataProvider } from '../context/github-context';
@@ -8,8 +11,56 @@ import { GithubDataProvider } from '../context/github-context';
 // light theme colors is a theme colors: #F2F2F2 , #B0B0B0, #222222, #151515, #E75B4F
 // dark theme colors is a theme colors: #151515, #515151, #D1D1D1,#EEEEEE, #FFFFFF, #D62617
 
-const typography = {
-	fontFamily: 'Inter',
+export const ColorModeContext = createContext({ toggleColorMode: () => { } });
+
+type ThemeColors = {
+	type: PaletteMode;
+	background: {
+		default: string;
+	},
+	primary: {
+		main: string;
+	},
+	secondary: {
+		main: string;
+	},
+	text: {
+		primary: string;
+		secondary: string;
+		error: string;
+	}
+}
+
+type Typography = {
+	fontFamily: string;
+	h1: {
+		fontSize: string;
+		fontWeight: number;
+		lineHeight: number;
+		letterSpacing: string;
+	},
+	h3: {
+		fontSize: string;
+		fontWeight: number;
+		lineHeight: number;
+		letterSpacing: string;
+	},
+	h4: {
+		fontSize: string;
+		fontWeight: number;
+		lineHeight: number;
+		letterSpacing: string;
+	},
+	h5: {
+		fontSize: string;
+		fontWeight: number;
+		lineHeight: number;
+		letterSpacing: string;
+	}
+}
+
+const typography: Typography = {
+	fontFamily: 'Inter, sans-serif',
 	h1: {
 		fontSize: '48px',
 		fontWeight: 600,
@@ -36,53 +87,78 @@ const typography = {
 	}
 }
 
-const ligthTheme = createTheme({
-	palette: {
-		mode: 'light',
-		primary: {
-			main: '#EEEEEE',
-			100: '#F2F2F2',
-			200: '#B0B0B0',
-			300: '#383838',
-			400: '#222222',
-			500: '#151515',
-			50: '#E75B4F',
-		},
+const darkPalette: ThemeColors = {
+	type: "dark",
+	background: {
+		default: "#151515",
 	},
-	typography: {
-		...typography
-	}
-
-});
-
-
-// TODO: Fix Palette colors !
-const darkTheme = createTheme({
-	palette: {
-		mode: 'dark',
-		primary: {
-			main: '#222222',
-			100: '#151515',
-			200: '#515151',
-			300: '#D1D1D1',
-			400: '#EEEEEE',
-			500: '#FFFFFF',
-			50: '#D62617',
-		}
+	primary: {
+		main: "#222222"
 	},
-	typography: {
-		...typography
+	secondary: {
+		main: "#383838"
+	},
+	text: {
+		primary: "#F2F2F2",
+		secondary: "#B0B0B0",
+		error: "#E75B4F"
 	}
-});
+}
+
+const lightPallety: ThemeColors = {
+	type: "dark",
+	background: {
+		default: "#FFFFFF",
+	},
+	primary: {
+		main: "#EEEEEE"
+	},
+	secondary: {
+		main: "#D1D1D1"
+	},
+	text: {
+		primary: "#151515",
+		secondary: "#515151",
+		error: "#D62617"
+	}
+}
+
 
 
 export default function KanbanBranchesPOC({ Component, pageProps }: AppProps) {
+	// TODO: Extract logic to a custom separate provider component
+	const [mode, setMode] = useState<PaletteMode>('light');
+
+	const colorMode = useMemo(
+		() => ({
+			// The dark mode switch would invoke this method
+			toggleColorMode: () => {
+				setMode((prevMode: PaletteMode) =>
+					prevMode === 'light' ? 'dark' : 'light',
+				);
+			},
+		}),
+		[],
+	);
+
+	const getDesignTokens = (mode: PaletteMode) => {
+		console.log(mode);
+		return {
+			palette: { mode, ...(mode === 'light' ? lightPallety : darkPalette) },
+			typography: typography
+		}
+	}
+
+	const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
+
 	return (
-		<ThemeProvider theme={darkTheme}>
-			<GithubDataProvider>
-				<CssBaseline />
-				<Component {...pageProps} />
-			</GithubDataProvider>
-		</ThemeProvider >
+		<ColorModeContext.Provider value={colorMode}>
+			<ThemeProvider theme={theme}>
+				<GithubDataProvider>
+					<CssBaseline />
+					<Component {...pageProps} />
+				</GithubDataProvider>
+			</ThemeProvider >
+		</ColorModeContext.Provider>
 	)
 }

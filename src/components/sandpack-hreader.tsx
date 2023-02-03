@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Paper, Grid, Typography, Box, styled } from '@mui/material';
+import { Grid, Typography, styled } from '@mui/material';
 import router from 'next/router';
 import { useContext } from 'react';
 import { GithubDataContext } from '../context/github-context';

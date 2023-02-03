@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Grid from '@mui/material/Grid';
 import { useRouter } from 'next/router';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { TextField, Button, Typography, Box } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import { getBranches, getStars } from '../services/github-api';
@@ -91,15 +91,15 @@ const SImage = styled(Image)(({ }) => ({
 }));
 
 const STypography = styled(Typography)(({ theme }) => ({
-	color: theme.palette.primary.light,
+	color: theme.palette.text.primary,
 }));
 
-// TODO: Fix typography
 const SButton = styled(Button)(({ theme }) => ({
 	letterSpacing: '-0.0125em',
 	backgroundColor: theme.palette.primary.main,
 	":hover": {
-		backgroundColor: theme.palette.primary.main,
+		backgroundColor: theme.palette.secondary.main,
+		boxShadow: 'none',
 	},
 	boxShadow: 'none',
 }));
