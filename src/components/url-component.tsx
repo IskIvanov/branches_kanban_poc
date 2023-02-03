@@ -1,11 +1,9 @@
 import Image from 'next/image'
 import Grid from '@mui/material/Grid';
-import { useRouter } from 'next/router';
-import { useContext, useState } from 'react';
 import { TextField, Button, Typography, Box } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
-import { getBranches, getStars } from '../services/github-api';
-import { GithubDataContext } from '../context/github-context';
+import useUrlComponentLogic from '../hooks/use-url-component';
+
 
 
 // TODO: Add logic for submit and Loading state
@@ -18,40 +16,8 @@ import { GithubDataContext } from '../context/github-context';
  */
 
 export default function URLComponent() {
-	const router = useRouter();
 	const theme = useTheme();
-	const [url, setUrl] = useState<string>('');
-	const [loading, setLoading] = useState<boolean>(false);
-	const [error, setError] = useState<boolean>(false);
-	const { setBranches, setStars } = useContext(GithubDataContext);
-
-	// Add a callback to handleClick the set loading state to true.
-	const handleClick = async () => {
-		if (!url) return;
-		else {
-			setLoading(true);
-			setError(false);
-			const owner = url.split('/')[3];
-			const repo = url.split('/')[4];
-			const branchesData = await getBranches(owner, repo);
-			const starsData = await getStars(owner, repo);
-			if (branchesData && starsData) {
-				await setBranches(branchesData.data);
-				await setStars(starsData);
-			}
-			if (branchesData && starsData) {
-				router.push('/sandpack');
-			} else {
-				setError(true);
-			}
-			setLoading(false);
-		}
-	}
-
-	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const url = event.target.value;
-		setUrl(url);
-	}
+	const { loading, error, handleClick, handleChange } = useUrlComponentLogic();
 
 	return (
 		<SContainer>

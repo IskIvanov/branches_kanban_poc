@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Grid, Typography, styled } from '@mui/material';
+import { Grid, Box, Typography, styled } from '@mui/material';
 import router from 'next/router';
 import { useContext } from 'react';
 import { GithubDataContext } from '../context/github-context';
@@ -15,27 +15,39 @@ export default function SandpackHeader() {
 	return (
 		<SSandpack container item>
 			<SSandpackHeader item display='flex'>
-				<Image src='/images/back-arrow.svg' alt='Star' width={25} height={25} className='testingStles relative bg-slate-400' onClick={handleBackButton} />
+				<Image src='/images/back-arrow.svg' alt='Star' width={25} height={25} onClick={handleBackButton} />
 				<Typography variant="h1" margin={2}>sandpack</Typography>
-				<span><Image src='/images/star.svg' alt='Star' width={20} height={20} className='testingStles relative bg-slate-400' /> {stars}</span>
+				<SStar><Image src='/images/star.svg' alt='Star' width={20} height={20} />{stars}</SStar>
 			</SSandpackHeader>
-			<Typography variant="h3" width={367} height={40}>
+			<SText variant="h3" width={405}>
 				A component toolkit for creating live-running code editing experiences, using the power of CodeSandbox.
-			</Typography>
+			</SText>
 		</SSandpack>
 	);
 }
 
-const SSandpack = styled(Grid)(({ theme }) => ({
+const SSandpack = styled(Grid)(({ }) => ({
 	display: 'flex',
 	flexDirection: 'column',
 	alignItems: 'center',
+	marginBottom: '100px',
 }));
-const SSandpackHeader = styled(Grid)(({ theme }) => ({
+const SSandpackHeader = styled(Grid)(({ }) => ({
 	display: 'flex',
 	flexDirection: 'row',
 	alignItems: 'center',
 	justifyContent: 'space-between',
 	width: '100%',
-	padding: theme.spacing(5),
+}));
+
+const SText = styled(Typography)(({ theme }) => ({
+	height: 'fit-content',
+	marginLeft: theme.spacing(24),
+}));
+
+const SStar = styled(Box)(({ theme }) => ({
+	width: '2.5rem',
+	display: 'flex',
+	alignItems: 'center',
+	justifyContent: 'space-between',
 }));
