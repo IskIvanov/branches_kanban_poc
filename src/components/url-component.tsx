@@ -3,14 +3,6 @@ import Grid from '@mui/material/Grid';
 import { TextField, Button, Typography, Box } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import useUrlComponentLogic from '../hooks/use-url-component';
-
-
-
-// TODO: Add logic for submit and Loading state
-// TODO: Logic for url parsing should live here.
-// TODO: Develop a loading state for the button.
-// TODO: Add URL validation logic.
-
 /**
  * S stands for Styled Component
  */

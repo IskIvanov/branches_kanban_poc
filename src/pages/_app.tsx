@@ -1,5 +1,4 @@
 import 'typeface-inter';
-import '../styles/global.css';
 import useTheme from '../hooks/use-theme';
 import { createContext } from 'react';
 import { CssBaseline } from '@mui/material';
