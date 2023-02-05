@@ -1,6 +1,6 @@
 
 # GitHub Repository Kanban
-### A proof of concept application for an overview of the active branches on a GitHub repository.
+ A proof of concept application for an overview of the active branches on a GitHub repository.
 
 ## Features
 - Input a GitHub repository URL and view basic repository information
@@ -14,9 +14,8 @@
 - Material UI
 
 
----
+
 ## Run locally
-First, run the development server:
 
 1. Clone the repository: git clone https://github.com/iskivanov/github-repository-kanban.git
 2. Change directory: cd github-repository-kanban
@@ -35,7 +34,6 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
 
----
 ### API Reference
 GitHub API documentation: https://docs.github.com/en/rest/guides/getting-started-with-the-rest-api
 
