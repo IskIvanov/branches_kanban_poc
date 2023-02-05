@@ -2,10 +2,21 @@
 # GitHub Repository Kanban
  A proof of concept application for an overview of the active branches on a GitHub repository.
 
+## Demo: 
+
+
+
+https://user-images.githubusercontent.com/28646980/216834993-0f38c39c-e47b-421d-895d-df302d439d74.mov
+
+
+
+ https://6hb42d.sse.codesandbox.io/
+
 ## Features
 - Input a GitHub repository URL and view basic repository information
 - View and move active branches between three columns: "In Progress", "Ready for Review", and "Ready to Merge"
 - State of the kanban is persisted locally in the browser
+- Switch bewtween light and dark theme
 
 ## Technology Stack
 - React
